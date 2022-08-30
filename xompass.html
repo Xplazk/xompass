@@ -57,39 +57,59 @@
         temp.send();
       };
 
-      JSON.parse(getJSON('https://xompasssuiteadminstg.z20.web.core.windows.net/semaphore.json',
+      var parseT = getJSON('https://xompasssuiteadminstg.z20.web.core.windows.net/semaphore.json',
       function(err, data) {
         if (err !== null) {
           alert('Ups, algo salio mal: ' + err);
         } else {
           alert('Resultado: ' + data.query.count);
         }
-      }));
+      });
+
+      //console.log(parseT);
     
+      function tiempoColor(color) {
+        for (var i = 0; i < parseT.lights.length; i++) {
+          if (color == parseT.lights[i][0]) {
+            return color*1000;
+          }
+        }
+      }
+
       function inicioSemaforo () {
         //parsear JSON para obetener el currentLightColor
 
         //setTimeout, 1 second = 1000 milliseconds.
+        
+        if (parseT.currentLightColor === 'green'){
+          green.style.opacity=1;
+        }
+        else if (parseT.currentLightColor === 'orange'){
+          orange.style.opacity=1;
+        }
+        else if (parseT.currentLightColor === 'red'){
+          red.style.opacity=1;
+        }
         setTimeout(function () {
           green.style.opacity=.3;
           red.style.opacity=.3;
           orange.style.opacity=1;
         }
-                   ,1000); //1*1000, donde orange es 1 segundo, luego de parsear se coloca el resultado por medio de variable en la linea 78
+                   ,1000); //ese 1000 se reemplaza al llamar la function color para tener el tiempo
 
         setTimeout(function () {
           green.style.opacity=.3;
           red.style.opacity=1;
           orange.style.opacity=.3; 
         }
-                   ,10000); //10*1000, donde orange es 10 segundos, luego de parsear se coloca el resultado por medio de variable en la linea 85
+                   ,10000); //ese 10000 se reemplaza al llamar la function color para tener el tiempo
 
         setTimeout(function () {
           green.style.opacity=1;
           red.style.opacity=.3;
           orange.style.opacity=.3;
         }
-                   ,5000); //5*1000, donde orange es 5 segundos, luego de parsear se coloca el resultado por medio de variable en la linea 92
+                   ,5000); //ese 5000 se reemplaza al llamar la function color para tener el tiempo
 
       }
       var temporizador=setInterval(function () {
