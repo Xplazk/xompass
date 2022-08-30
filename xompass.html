@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Semaforo
+    </title>
+    <style>
+      #semaforo{
+        width: 80px;
+        height: 220px;
+        border-radius: 20px;
+        display: grid;
+        place-items: center;
+        background-color: rgb(0, 0, 0);
+      }
+
+      #semaforo > div{
+        width:50px;
+        height: 50px;
+        border-radius: 50%;
+        opacity: .2;
+      }
+      
+      #green{
+        background-color: rgb(0, 255, 0);
+      }
+      #orange{
+        background-color: rgb(255,165,0);
+      }
+      #red{
+        background-color: rgb(255, 0, 0);
+      }
+    </style>
+  </head>
+  <body onload="temporizador;">
+    <div id="semaforo">
+      <div id="green">
+      </div>
+      <div id="orange">
+      </div>
+      <div id="red">
+      </div>
+    </div>
+    <script>
+      var getJSON = function(url, callback) {
+        var temp = new XMLHttpRequest();
+        temp.open('GET', 'url', true);
+        temp.responseType = 'json';
+        temp.onload = function() {
+          var status = temp.status;
+          if (status === 200) {
+            callback(null, temp.response);
+          } else {
+            callback(status, temp.response);
+          }
+        };
+        temp.send();
+      };
+
+      JSON.parse(getJSON('https://xompasssuiteadminstg.z20.web.core.windows.net/semaphore.json',
+      function(err, data) {
+        if (err !== null) {
+          alert('Ups, algo salio mal: ' + err);
+        } else {
+          alert('Resultado: ' + data.query.count);
+        }
+      }));
+    
+      function inicioSemaforo () {
+        //parsear JSON para obetener el currentLightColor
+
+        //setTimeout, 1 second = 1000 milliseconds.
+        setTimeout(function () {
+          green.style.opacity=.3;
+          red.style.opacity=.3;
+          orange.style.opacity=1;
+        }
+                   ,1000); //1*1000, donde orange es 1 segundo, luego de parsear se coloca el resultado por medio de variable en la linea 78
+
+        setTimeout(function () {
+          green.style.opacity=.3;
+          red.style.opacity=1;
+          orange.style.opacity=.3; 
+        }
+                   ,10000); //10*1000, donde orange es 10 segundos, luego de parsear se coloca el resultado por medio de variable en la linea 85
+
+        setTimeout(function () {
+          green.style.opacity=1;
+          red.style.opacity=.3;
+          orange.style.opacity=.3;
+        }
+                   ,5000); //5*1000, donde orange es 5 segundos, luego de parsear se coloca el resultado por medio de variable en la linea 92
+
+      }
+      var temporizador=setInterval(function () {
+        inicioSemaforo();
+      }
+                            ,10000);
+      inicioSemaforo();
+    </script>
+  </body>
+</html>
